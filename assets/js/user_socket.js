@@ -71,12 +71,14 @@ if (messagesContainer) {
 
 channel.on("new_msg", payload => {
   let messageItem = document.createElement("p")
-  messageItem.innerText = `[${Date()}] ${payload.body}`
+  messageItem.innerText = payload.body
   messagesContainer.appendChild(messageItem)
+  // drawRectangle()
 })
 
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
+
 
 export default socket

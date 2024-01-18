@@ -30,6 +30,18 @@ defmodule WebArcadeWeb.UserSocket do
   # response the client receives in that case, [define an error handler in the
   # websocket
   # configuration](https://hexdocs.pm/phoenix/Phoenix.Endpoint.html#socket/3-websocket-configuration).
+
+  def connect(%{"token" => token}, socket, _connect_info) do
+    # max_age: 1209600 is equivalent to two weeks in seconds
+    case Phoenix.Token.verify(socket, "user socket", token, max_age: 1_209_600) do
+      {:ok, user_id} ->
+        {:ok, assign(socket, :current_user, user_id)}
+
+      {:error, reason} ->
+        :error
+    end
+  end
+
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
